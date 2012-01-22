@@ -1,0 +1,32 @@
+{
+    "status_code": 200, 
+    "status_text": "OK", 
+    "user": {
+        "username": "mattslip", 
+        "bio": "", 
+        "image": {
+            "small": "http://images.extension.fm/avatar_small_mattslip", 
+            "medium": "http://images.extension.fm/avatar_medium_mattslip", 
+            "original": "http://images.extension.fm/avatar_orig_mattslip"
+        }, 
+        "now_playing": null, 
+        "import_feeds": [], 
+        "background": {
+            "repeat": null, 
+            "color": null, 
+            "image": null, 
+            "is_default": true, 
+            "use_image": false, 
+            "position": null
+        }, 
+        "name": "Matt Slip", 
+        "is_beta_tester": false, 
+        "website": "", 
+        "total_loved": 1, 
+        "total_following": 0, 
+        "online": false, 
+        "total_followers": 0, 
+        "viewer_following": false, 
+        "location": "London"
+    }
+}

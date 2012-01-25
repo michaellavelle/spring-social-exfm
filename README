@@ -1,10 +1,13 @@
 This project is the beginnings of a spring-social module for Ex.FM.  
 
 As Spring Social interacts with OAuth APIs, and Ex.Fm's current API is non-oauth,  this module is not *yet* fully 
-compatible all of the Spring Social framework.   If Ex.FM do implement OAuth in future API versions this project 
-contains the Spring-Social binding classes to support this - clients of this module will need only to supply url's 
+compatible all of the Spring Social framework.   
+
+If Ex.FM do implement OAuth in future API versions this project contains the Spring-Social binding classes to support this - clients of this module will need only to supply url's 
 for the OAuth endpoints.
 
 Although not yet fully compatible with Spring Social, this project does include a Java API client for the current 
-non-oauth Ex.Fm API.    Only a few of the API methods have been added so far, such as retrieving a user's profile 
+non-oauth Ex.Fm API.    
+
+Only a few of the API methods have been added so far, such as retrieving a user's profile 
 and loved song, and pagination of response's containing lists has not yet been implemented.

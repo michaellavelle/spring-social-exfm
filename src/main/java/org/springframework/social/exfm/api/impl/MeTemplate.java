@@ -59,5 +59,7 @@ public class MeTemplate extends AbstractUserTemplate implements MeOperations {
 	protected String getApiResourceBaseUrl() {
 		return getApiBaseUrl() + "/me";
 	}
+	
+	
 
 }

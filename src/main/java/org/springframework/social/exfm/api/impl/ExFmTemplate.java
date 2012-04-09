@@ -24,6 +24,7 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.exfm.api.ExFm;
 import org.springframework.social.exfm.api.MeOperations;
+import org.springframework.social.exfm.api.SongOperations;
 import org.springframework.social.exfm.api.UsersOperations;
 import org.springframework.social.exfm.api.impl.json.ExFmModule;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
@@ -38,6 +39,8 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 	private UsersOperations usersOperations;
 
 	private MeOperations meOperations;
+	
+	private SongOperations songOperations;
 
 	private ObjectMapper objectMapper;
 
@@ -96,6 +99,8 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 				isAuthorized());
 		meOperations = new MeTemplate(oauthApiBaseUrl, getRestTemplate(),
 				isAuthorized());
+		
+		songOperations = new SongTemplate(oauthApiBaseUrl, getRestTemplate(),isAuthorized());
 
 	}
 
@@ -104,6 +109,8 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 				isAuthorized());
 		meOperations = new MeTemplate(apiBaseUrl, getRestTemplate(), username,
 				password);
+		
+		songOperations = new SongTemplate(apiBaseUrl, getRestTemplate(),username,password);
 
 	}
 
@@ -154,6 +161,11 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 	@Override
 	public MeOperations meOperations() {
 		return meOperations;
+	}
+	
+	@Override
+	public SongOperations songOperations() {
+		return songOperations;
 	}
 
 }

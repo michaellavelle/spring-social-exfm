@@ -13,16 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.social.exfm.api;
+
+import org.springframework.social.exfm.api.impl.ExFmTemplate;
 
 /**
  * @author Michael Lavelle
  */
-public interface ExFm {
+public class OAuthSongTemplateTest extends AbstractSongTemplateTest {
 
-	public UsersOperations usersOperations();
-	public MeOperations meOperations();
-	public SongOperations songOperations();
+	private final static String ACCESS_TOKEN = "someAccessToken";
+
+	@Override
+	protected ExFmTemplate createExFmTemplate() {
+		return new ExFmTemplate(API_BASE_URL, ACCESS_TOKEN);
+	}
+
+	@Override
+	protected String getUserNamePasswordQueryString() {
+		return "";
+	}
+
+	@Override
+	protected String getAccessToken() {
+		return ACCESS_TOKEN;
+	}
 
 }

@@ -65,25 +65,32 @@ class ExFmErrorHandler extends DefaultResponseErrorHandler {
 		if (errorDetails == null || errorDetails.getStatus_code().equals("200")) {
 			handleUncategorizedError(response, errorDetails);
 		}
-
 		handleExFmError(response.getStatusCode(), errorDetails);
-
+	
 		// if not otherwise handled, do default handling and wrap with
 		// UncategorizedApiException
 		handleUncategorizedError(response, errorDetails);
+	}
+	
+	
+	private boolean isIgnorableError(Status status)
+	{
+		// Loving a song which is already loved results in status code 400, with certain text - don't treat as an error
+		return status != null && "Already loved this song".equals(status.getStatus_text());
 	}
 
 	@Override
 	public boolean hasError(ClientHttpResponse response) throws IOException {
 
 		if (super.hasError(response)) {
-			return true;
+			Status errorDetails = extractErrorDetailsFromResponse(response);
+			return !isIgnorableError(errorDetails);
 		}
 		// only bother checking the body for errors if we get past the default
 		// error check
 		String content = readFully(response.getBody());
-		return !content.contains("\"status_code\": 200");
-
+		return  !content.contains("\"status_code\": 200");
+	
 	}
 
 	void handleExFmError(HttpStatus statusCode, Status status) {

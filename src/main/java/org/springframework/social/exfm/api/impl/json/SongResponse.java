@@ -13,16 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.springframework.social.exfm.api.impl.json;
 
-package org.springframework.social.exfm.api;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.social.exfm.api.Song;
+import org.springframework.social.exfm.api.SongList;
 
 /**
  * @author Michael Lavelle
  */
-public interface ExFm {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SongResponse extends
+		AbstractExFmNamedNestedResponse<Song> {
 
-	public UsersOperations usersOperations();
-	public MeOperations meOperations();
-	public SongOperations songOperations();
+	@Override
+	@JsonProperty("song")
+	public void setNamedNestedResponse(Song nestedResponse) {
+		super.setNestedResponse(nestedResponse);
+	}
 
 }

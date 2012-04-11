@@ -17,14 +17,14 @@ package org.springframework.social.exfm.api.impl.json;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.social.exfm.api.SongList;
+import org.springframework.social.exfm.api.Song;
 
 /**
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExFmSongsResponse extends
-		AbstractExFmNamedNestedResponse<SongList> {
+		AbstractPaginatedResponse<Song,SongList> {
 
 	@Override
 	@JsonProperty("songs")

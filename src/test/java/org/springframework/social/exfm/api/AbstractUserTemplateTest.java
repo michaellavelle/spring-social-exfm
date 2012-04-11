@@ -24,8 +24,10 @@ import static org.springframework.social.test.client.RequestMatchers.requestTo;
 import static org.springframework.social.test.client.ResponseCreators.withResponse;
 
 import org.junit.Test;
+import org.springframework.data.domain.Page;
 import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.ResourceNotFoundException;
+import org.springframework.social.exfm.api.impl.json.SongList;
 
 /**
  * @author Michael Lavelle
@@ -84,9 +86,9 @@ public abstract class AbstractUserTemplateTest extends AbstractExFmApiTest {
 						withResponse(jsonResource("testdata/loved-songs"),
 								responseHeaders));
 
-		SongList songs = exFm.usersOperations().userOperations("mattslip")
+		Page<Song> songs = exFm.usersOperations().userOperations("mattslip")
 				.getLovedSongs();
-		assertSongData(songs.get(0));
+		assertSongData(songs.getContent().get(0));
 	}
 
 	@Test
@@ -99,9 +101,9 @@ public abstract class AbstractUserTemplateTest extends AbstractExFmApiTest {
 						withResponse(jsonResource("testdata/loved-songs"),
 								responseHeaders));
 
-		SongList songList = unauthorizedLastFm.usersOperations()
+		Page<Song> songList = unauthorizedLastFm.usersOperations()
 				.userOperations("mattslip").getLovedSongs();
-		assertSongData(songList.get(0));
+		assertSongData(songList.getContent().get(0));
 
 	}
 

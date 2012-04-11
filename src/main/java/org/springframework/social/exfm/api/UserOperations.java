@@ -15,6 +15,9 @@
  */
 package org.springframework.social.exfm.api;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 /**
  * @author Michael Lavelle
  */
@@ -22,6 +25,8 @@ public interface UserOperations {
 
 	public ExFmProfile getUserProfile();
 
-	public SongList getLovedSongs();
+	public Page<Song> getLovedSongs();
+	public Page<Song> getLovedSongs(Pageable pageable);
+
 
 }

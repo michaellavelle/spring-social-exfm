@@ -15,13 +15,19 @@
  */
 package org.springframework.social.exfm.api.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.social.ResourceNotFoundException;
 import org.springframework.social.exfm.api.ExFmProfile;
 import org.springframework.social.exfm.api.Song;
-import org.springframework.social.exfm.api.SongList;
 import org.springframework.social.exfm.api.SongOperations;
 import org.springframework.social.exfm.api.impl.json.ExFmSongsResponse;
 import org.springframework.social.exfm.api.impl.json.ExFmUserResponse;
+import org.springframework.social.exfm.api.impl.json.SongList;
 import org.springframework.social.exfm.api.impl.json.SongResponse;
 import org.springframework.web.client.RestTemplate;
 
@@ -100,5 +106,21 @@ public class SongTemplate extends
 		restTemplate.postForObject(getApiResourceUrl("/" + song.getId() + "/love") + (useOauth ? ""
 				: ("?username=" + username + "&password=" + password)),null,String.class);	
 	}
+	
+	@Override
+	public Page<Song> search(String searchText) {
+		return search(searchText,null);
+	}
+	
+	@Override
+	public Page<Song> search(String searchText,Pageable pageable) {
+		ExFmSongsResponse songsResponse= restTemplate.getForObject(
+				getApiResourceUrl("/search/" + searchText,pageable), ExFmSongsResponse.class);
+		List<Song> songList = 
+			songsResponse.getNestedResponse();
+		long totalResults = (songsResponse.getTotal() == null) ? songList.size() : songsResponse.getTotal().longValue();
+		return new PageImpl<Song>(songList == null ? new ArrayList<Song>() : songList,songsResponse.getPageable(pageable,songList),totalResults);
+	}
+	
 
 }

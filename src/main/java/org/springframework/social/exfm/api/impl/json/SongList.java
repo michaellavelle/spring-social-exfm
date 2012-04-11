@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.exfm.api;
+package org.springframework.social.exfm.api.impl.json;
 
 import java.util.ArrayList;
+
+import org.springframework.social.exfm.api.Song;
 
 /**
  * @author Michael Lavelle

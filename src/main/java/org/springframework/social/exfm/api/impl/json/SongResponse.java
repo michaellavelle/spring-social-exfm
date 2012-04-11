@@ -18,7 +18,6 @@ package org.springframework.social.exfm.api.impl.json;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.social.exfm.api.Song;
-import org.springframework.social.exfm.api.SongList;
 
 /**
  * @author Michael Lavelle

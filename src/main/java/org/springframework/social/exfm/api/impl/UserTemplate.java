@@ -15,9 +15,16 @@
  */
 package org.springframework.social.exfm.api.impl;
 
-import org.springframework.social.exfm.api.SongList;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.social.exfm.api.Song;
 import org.springframework.social.exfm.api.UserOperations;
 import org.springframework.social.exfm.api.impl.json.ExFmSongsResponse;
+import org.springframework.social.exfm.api.impl.json.SongList;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -40,11 +47,18 @@ public class UserTemplate extends AbstractUserTemplate implements
 	}
 
 	@Override
-	public SongList getLovedSongs() {
-		SongList songList = restTemplate.getForObject(
-				getApiResourceUrl("/loved"), ExFmSongsResponse.class)
-				.getNestedResponse();
-		return songList == null ? new SongList() : songList;
+	public Page<Song> getLovedSongs(Pageable pageable) {
+		ExFmSongsResponse songsResponse= restTemplate.getForObject(
+				getApiResourceUrl("/loved",pageable), ExFmSongsResponse.class);
+		List<Song> songList = 
+			songsResponse.getNestedResponse();
+		long totalResults = (songsResponse.getTotal() == null) ? songList.size() : songsResponse.getTotal().longValue();
+		return new PageImpl<Song>(songList == null ? new ArrayList<Song>() : songList,songsResponse.getPageable(pageable,songList),totalResults);
+	}
+	
+	@Override
+	public Page<Song> getLovedSongs() {
+		return getLovedSongs(null);
 	}
 
 }

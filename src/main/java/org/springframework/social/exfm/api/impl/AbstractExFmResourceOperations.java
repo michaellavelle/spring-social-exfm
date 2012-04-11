@@ -15,6 +15,10 @@
  */
 package org.springframework.social.exfm.api.impl;
 
+
+
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -30,8 +34,25 @@ public abstract class AbstractExFmResourceOperations extends
 
 	protected abstract String getApiResourceBaseUrl();
 
-	protected String getApiResourceUrl(String resourcePath) {
-		return getApiResourceBaseUrl() + resourcePath;
+	protected String getApiResourceUrl(String resourcePath,Pageable pageable) {
+		String resourceUrl = getApiResourceBaseUrl() + resourcePath;
+		if (pageable != null)
+		{
+			resourceUrl = resourceUrl + getQuerySeparator(resourceUrl)  + "results=" + pageable.getPageSize() + "&start=" + pageable.getOffset();
+		}
+		return resourceUrl;
 	}
+	
+	protected String getApiResourceUrl(String resourcePath) {
+		return getApiResourceUrl(resourcePath,null);
+	}
+	
+	private String getQuerySeparator(String existingResourceUrl)
+	{
+		return existingResourceUrl.indexOf("?") == -1 ? "?" : "&";
+
+	}
+	
+	
 
 }

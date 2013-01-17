@@ -44,7 +44,7 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 class ExFmErrorHandler extends DefaultResponseErrorHandler {
 
 	private void handleUncategorizedError(ClientHttpResponse response,
-			Status status) {
+			Status status) throws IOException {
 		try {
 			super.handleError(response);
 		} catch (Exception e) {
@@ -52,6 +52,13 @@ class ExFmErrorHandler extends DefaultResponseErrorHandler {
 				String m = status.getStatus_text();
 				throw new UncategorizedApiException(m, e);
 			} else {
+				String content = readFully(response.getBody());
+				if (content.contains("404 NOT FOUND"))
+				{
+					throw new ResourceNotFoundException("Not found");
+				}
+				
+				
 				throw new UncategorizedApiException(
 						"No error details from ExFm", e);
 			}
@@ -89,8 +96,7 @@ class ExFmErrorHandler extends DefaultResponseErrorHandler {
 		// only bother checking the body for errors if we get past the default
 		// error check
 		String content = readFully(response.getBody());
-		return  !content.contains("\"status_code\": 200");
-	
+		return  !content.contains("\"status_code\": 200") && !content.contains("\"status_code\":200");
 	}
 
 	void handleExFmError(HttpStatus statusCode, Status status) {

@@ -29,7 +29,7 @@ abstract class SongMixin {
 
 	@JsonCreator
 	SongMixin(@JsonProperty("id") String id, @JsonProperty("url") String url,
-			@JsonProperty("title") String title) {
+			@JsonProperty("artist") String artist,@JsonProperty("title") String title) {
 	}
 
 }

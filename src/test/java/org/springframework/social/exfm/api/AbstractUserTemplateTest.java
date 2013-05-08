@@ -130,6 +130,7 @@ public abstract class AbstractUserTemplateTest extends AbstractExFmApiTest {
 	private void assertBasicSongData(Song song) {
 		assertEquals("Madonna Ð Get Together (Monsieur Adi Remix)",
 				song.getTitle());
+		assertEquals("Madonna",song.getArtist());
 	}
 
 	private void assertSongData(Song song) {

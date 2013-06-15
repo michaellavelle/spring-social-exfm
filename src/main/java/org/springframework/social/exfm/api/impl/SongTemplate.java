@@ -89,16 +89,18 @@ public class SongTemplate extends
 		return song;
 	}
 	
-	private String getContextParamsString(String contextUrl,String fromUser)
+	private String getContextParamsString(String contextUrl,String fromUser,boolean useOauth)
 	{
 		String contextParamsString = "";
+		String delimiter = useOauth ? "?" : "&";
 		if (contextUrl != null)
 		{
-			contextParamsString = contextParamsString + "&source=" + contextUrl;
+			contextParamsString = contextParamsString + delimiter + "source=" + contextUrl;
+			delimiter = "&";
 		}
 		if (fromUser != null)
 		{
-			contextParamsString = contextParamsString + "&context=" + fromUser;
+			contextParamsString = contextParamsString + delimiter + "context=" + fromUser;
 		}
 		return contextParamsString;
 	}
@@ -119,8 +121,9 @@ public class SongTemplate extends
 	public void loveSongById(String songId,String contextUrl,String fromUser)
 	{
 		requireAuthorization();
-		restTemplate.postForObject(getApiResourceUrl("/" + songId + "/love") + (useOauth ? ""
-				: ("?username=" + username + "&password=" + password + getContextParamsString(contextUrl,fromUser))),null,String.class);	
+		String url = getApiResourceUrl("/" + songId + "/love") + (useOauth ? ""
+				: ("?username=" + username + "&password=" + password)) + getContextParamsString(contextUrl,fromUser,useOauth);
+		restTemplate.postForObject(url,null,String.class);	
 	}
 	
 	@Override
@@ -130,7 +133,7 @@ public class SongTemplate extends
 		Song song = getSongBySourceUrl(sourceUrl);
 		
 		restTemplate.postForObject(getApiResourceUrl("/" + song.getId() + "/love") + (useOauth ? ""
-				: ("?username=" + username + "&password=" + password + getContextParamsString(contextUrl,fromUser))),null,String.class);	
+				: ("?username=" + username + "&password=" + password))  + getContextParamsString(contextUrl,fromUser,useOauth),null,String.class);	
 	}
 	
 	@Override

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:facebook="http://www.springframework.org/schema/social/cloudplaylists"
+	targetNamespace="http://www.springframework.org/schema/social/cloudplaylists">
+
+	<xs:element name="config">
+		<xs:complexType>
+			<xs:attribute name="app-id" use="required" type="xs:string" />
+			<xs:attribute name="app-secret" use="required" type="xs:string" />
+			<xs:attribute name="oauth-authorize-url" use="required" type="xs:string" />
+			<xs:attribute name="oauth-token-url" use="required" type="xs:string" />
+			<xs:attribute name="oauth-api-base-url" use="required" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

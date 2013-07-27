@@ -20,11 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.social.InternalServerErrorException;
@@ -34,6 +29,12 @@ import org.springframework.social.ResourceNotFoundException;
 import org.springframework.social.ServerDownException;
 import org.springframework.social.UncategorizedApiException;
 import org.springframework.web.client.DefaultResponseErrorHandler;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Subclass of {@link DefaultResponseErrorHandler} that handles errors from
@@ -50,16 +51,16 @@ class ExFmErrorHandler extends DefaultResponseErrorHandler {
 		} catch (Exception e) {
 			if (status != null && !status.getStatus_code().equals("200")) {
 				String m = status.getStatus_text();
-				throw new UncategorizedApiException(m, e);
+				throw new UncategorizedApiException("exfm",m, e);
 			} else {
 				String content = readFully(response.getBody());
 				if (content.contains("404 NOT FOUND"))
 				{
-					throw new ResourceNotFoundException("Not found");
+					throw new ResourceNotFoundException("exfm","Not found");
 				}
 				
 				
-				throw new UncategorizedApiException(
+				throw new UncategorizedApiException("exfm",
 						"No error details from ExFm", e);
 			}
 		}
@@ -109,21 +110,21 @@ class ExFmErrorHandler extends DefaultResponseErrorHandler {
 		if (httpStatus == HttpStatus.OK) {
 			// Should never happen
 		} else if (httpStatus == HttpStatus.BAD_REQUEST) {
-			throw new ResourceNotFoundException(message);
+			throw new ResourceNotFoundException("exfm",message);
 
 		} else if (httpStatus == HttpStatus.NOT_FOUND) {
-			throw new ResourceNotFoundException(message);
+			throw new ResourceNotFoundException("exfm",message);
 
 		} else if (httpStatus == HttpStatus.UNAUTHORIZED) {
 
-			throw new NotAuthorizedException(message);
+			throw new NotAuthorizedException("exfm",message);
 		} else if (httpStatus == HttpStatus.FORBIDDEN) {
 
-			throw new OperationNotPermittedException(message);
+			throw new OperationNotPermittedException("exfm", message);
 		} else if (httpStatus == HttpStatus.INTERNAL_SERVER_ERROR) {
-			throw new InternalServerErrorException(message);
+			throw new InternalServerErrorException("exfm",message);
 		} else if (httpStatus == HttpStatus.SERVICE_UNAVAILABLE) {
-			throw new ServerDownException(message);
+			throw new ServerDownException("exfm",message);
 		}
 	}
 

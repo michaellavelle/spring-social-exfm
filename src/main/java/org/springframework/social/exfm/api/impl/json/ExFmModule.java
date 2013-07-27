@@ -15,10 +15,12 @@
  */
 package org.springframework.social.exfm.api.impl.json;
 
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.module.SimpleModule;
+
 import org.springframework.social.exfm.api.ExFmProfile;
 import org.springframework.social.exfm.api.Song;
+
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 /**
  * Jackson module for setting up mixin annotations on ExFm model types. This
@@ -30,7 +32,7 @@ import org.springframework.social.exfm.api.Song;
 public class ExFmModule extends SimpleModule {
 
 	public ExFmModule() {
-		super("ExFmModule", new Version(1, 0, 0, null));
+		super("ExFmModule", new Version(1, 0, 0, null,null,null));
 	}
 
 	@Override

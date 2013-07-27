@@ -17,9 +17,9 @@ package org.springframework.social.exfm.api.impl;
 
 import java.util.List;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.exfm.api.ExFm;
@@ -30,6 +30,8 @@ import org.springframework.social.exfm.api.impl.json.ExFmModule;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
 import org.springframework.social.support.ClientHttpRequestFactorySelector;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Michael Lavelle
@@ -94,6 +96,11 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 		return messageConverters;
 	}
 
+	@Override
+	protected void configureRestTemplate(RestTemplate restTemplate) {
+		restTemplate.setErrorHandler(new ExFmErrorHandler());	}
+
+
 	private void initSubApis(String oauthApiBaseUrl, String accessToken) {
 		usersOperations = new UsersTemplate(oauthApiBaseUrl, getRestTemplate(),
 				isAuthorized());
@@ -102,6 +109,16 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 		
 		songOperations = new SongTemplate(oauthApiBaseUrl, getRestTemplate(),isAuthorized());
 
+	}
+
+	@Override
+	protected MappingJackson2HttpMessageConverter getJsonMessageConverter() {
+		MappingJackson2HttpMessageConverter converter = super
+		.getJsonMessageConverter();
+		objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new ExFmModule());
+		converter.setObjectMapper(objectMapper);
+		return converter;
 	}
 
 	private void initSubApis(String apiBaseUrl, String username, String password) {
@@ -116,11 +133,8 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 
 	// private helpers
 	private void initialize(String apiBaseUrl, String accessToken) {
-		registerExFmJsonModule(getRestTemplate());
-		getRestTemplate().setErrorHandler(new ExFmErrorHandler());
 		// Wrap the request factory with a BufferingClientHttpRequestFactory so
 		// that the error handler can do repeat reads on the response.getBody()
-
 		super.setRequestFactory(ClientHttpRequestFactorySelector
 				.bufferRequests(getRestTemplate().getRequestFactory()));
 		initSubApis(apiBaseUrl, accessToken);
@@ -129,8 +143,7 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 
 	// private helpers
 	private void initialize(String apiBaseUrl, String username, String password) {
-		registerExFmJsonModule(getRestTemplate());
-		getRestTemplate().setErrorHandler(new ExFmErrorHandler());
+
 		// Wrap the request factory with a BufferingClientHttpRequestFactory so
 		// that the error handler can do repeat reads on the response.getBody()
 
@@ -140,18 +153,6 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 
 	}
 
-	private void registerExFmJsonModule(RestTemplate restTemplate) {
-		objectMapper = new ObjectMapper();
-		objectMapper.registerModule(new ExFmModule());
-		List<HttpMessageConverter<?>> converters = restTemplate
-				.getMessageConverters();
-		for (HttpMessageConverter<?> converter : converters) {
-			if (converter instanceof MappingJacksonHttpMessageConverter) {
-				MappingJacksonHttpMessageConverter jsonConverter = (MappingJacksonHttpMessageConverter) converter;
-				jsonConverter.setObjectMapper(objectMapper);
-			}
-		}
-	}
 
 	@Override
 	public UsersOperations usersOperations() {

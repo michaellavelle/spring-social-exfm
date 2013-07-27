@@ -42,7 +42,7 @@ public abstract class AbstractExFmOperations {
 	
 	protected void requireAuthorization() {
 		if (!isAuthorizedForUser) {
-			throw new MissingAuthorizationException();
+			throw new MissingAuthorizationException("exfm");
 		}
 	}
 

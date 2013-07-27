@@ -73,7 +73,7 @@ public class SongTemplate extends
 				getApiResourceUrl("/" + sourceUrl), SongResponse.class).getNestedResponse();
 		if (song.getTitle() == null)
 		{
-			throw new ResourceNotFoundException("No song details available for source url :" + sourceUrl);
+			throw new ResourceNotFoundException("exfm","No song details available for source url :" + sourceUrl);
 		}	
 		return song;
 	}
@@ -84,7 +84,7 @@ public class SongTemplate extends
 				getApiResourceUrl("/" + songId), SongResponse.class).getNestedResponse();
 		if (song.getTitle() == null)
 		{
-			throw new ResourceNotFoundException("No song details available for song id :" + songId);
+			throw new ResourceNotFoundException("exfm","No song details available for song id :" + songId);
 		}
 		return song;
 	}

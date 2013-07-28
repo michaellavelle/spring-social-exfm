@@ -33,4 +33,11 @@ public class ExFmConnectionFactory extends OAuth2ConnectionFactory<ExFm> {
 				new ExFmAdapter());
 	}
 
+	@Override
+	public boolean supportsStateParameter() {
+		return false;
+	}
+	
+	
+
 }

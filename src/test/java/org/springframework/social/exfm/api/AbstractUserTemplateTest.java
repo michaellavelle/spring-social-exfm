@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.ResourceNotFoundException;
-import org.springframework.social.exfm.api.impl.json.SongList;
 
 /**
  * @author Michael Lavelle
@@ -128,7 +127,7 @@ public abstract class AbstractUserTemplateTest extends AbstractExFmApiTest {
 	}
 
 	private void assertBasicSongData(Song song) {
-		assertEquals("Madonna Ð Get Together (Monsieur Adi Remix)",
+		assertEquals("Madonna â€“ Get Together (Monsieur Adi Remix)",
 				song.getTitle());
 		assertEquals("Madonna",song.getArtist());
 	}

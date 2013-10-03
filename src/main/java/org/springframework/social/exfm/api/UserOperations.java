@@ -26,7 +26,7 @@ public interface UserOperations {
 	public ExFmProfile getUserProfile();
 
 	public Page<Song> getLovedSongs();
-	public Page<Song> getLovedSongs(Pageable pageable);
 
+	public Page<Song> getLovedSongs(Pageable pageable);
 
 }

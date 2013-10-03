@@ -22,17 +22,14 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @author Michael Lavelle
  */
-public abstract class AbstractUserTemplate extends
-		AbstractExFmResourceOperations {
+public abstract class AbstractUserTemplate extends AbstractExFmResourceOperations {
 
-	public AbstractUserTemplate(String apiBaseUrl, RestTemplate restTemplate,
-			boolean isAuthorizedForUser) {
+	public AbstractUserTemplate(String apiBaseUrl, RestTemplate restTemplate, boolean isAuthorizedForUser) {
 		super(apiBaseUrl, restTemplate, isAuthorizedForUser);
 	}
 
 	public ExFmProfile getUserProfile() {
-		return restTemplate.getForObject(getApiResourceUrl(""),
-				ExFmUserResponse.class).getNestedResponse();
+		return restTemplate.getForObject(getApiResourceUrl(""), ExFmUserResponse.class).getNestedResponse();
 	}
 
 }

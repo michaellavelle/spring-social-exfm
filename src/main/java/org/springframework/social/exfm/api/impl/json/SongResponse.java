@@ -24,8 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SongResponse extends
-		AbstractExFmNamedNestedResponse<Song> {
+public class SongResponse extends AbstractExFmNamedNestedResponse<Song> {
 
 	@Override
 	@JsonProperty("song")

@@ -24,8 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ExFmSongsResponse extends
-		AbstractPaginatedResponse<Song,SongList> {
+public class ExFmSongsResponse extends AbstractPaginatedResponse<Song, SongList> {
 
 	@Override
 	@JsonProperty("songs")

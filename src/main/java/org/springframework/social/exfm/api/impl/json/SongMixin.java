@@ -28,8 +28,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 abstract class SongMixin {
 
 	@JsonCreator
-	SongMixin(@JsonProperty("id") String id, @JsonProperty("url") String url,
-			@JsonProperty("artist") String artist,@JsonProperty("title") String title) {
+	SongMixin(@JsonProperty("id") String id, @JsonProperty("url") String url, @JsonProperty("artist") String artist,
+			@JsonProperty("title") String title) {
 	}
 
 }

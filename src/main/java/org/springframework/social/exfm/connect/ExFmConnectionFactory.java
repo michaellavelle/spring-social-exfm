@@ -25,11 +25,10 @@ import org.springframework.social.exfm.api.ExFm;
  */
 public class ExFmConnectionFactory extends OAuth2ConnectionFactory<ExFm> {
 
-	public ExFmConnectionFactory(String clientId, String clientSecret,
-			String oauthAuthorizeUrl, String oauthTokenUrl,
+	public ExFmConnectionFactory(String clientId, String clientSecret, String oauthAuthorizeUrl, String oauthTokenUrl,
 			String oauthApiBaseUrl) {
-		super("exfm", new ExFmServiceProvider(clientId, clientSecret,
-				oauthAuthorizeUrl, oauthTokenUrl, oauthApiBaseUrl),
+		super("exfm",
+				new ExFmServiceProvider(clientId, clientSecret, oauthAuthorizeUrl, oauthTokenUrl, oauthApiBaseUrl),
 				new ExFmAdapter());
 	}
 
@@ -37,7 +36,5 @@ public class ExFmConnectionFactory extends OAuth2ConnectionFactory<ExFm> {
 	public boolean supportsStateParameter() {
 		return false;
 	}
-	
-	
 
 }

@@ -24,10 +24,10 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.exfm.api.ExFm;
 
-
 /**
- * Support class for JavaConfig and XML configuration support.
- * Creates an API binding instance for the current user's connection.
+ * Support class for JavaConfig and XML configuration support. Creates an API
+ * binding instance for the current user's connection.
+ * 
  * @author Michael Lavelle
  */
 public class ExFmApiHelper implements ApiHelper<ExFm> {
@@ -35,19 +35,19 @@ public class ExFmApiHelper implements ApiHelper<ExFm> {
 	private final UsersConnectionRepository usersConnectionRepository;
 
 	private final UserIdSource userIdSource;
-	
 
 	private ExFmApiHelper(UsersConnectionRepository usersConnectionRepository, UserIdSource userIdSource) {
 		this.usersConnectionRepository = usersConnectionRepository;
-		this.userIdSource = userIdSource;		
+		this.userIdSource = userIdSource;
 	}
 
 	public ExFm getApi() {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Getting API binding instance for ExFm");
 		}
-		
-		Connection<ExFm> connection = usersConnectionRepository.createConnectionRepository(userIdSource.getUserId()).findPrimaryConnection(ExFm.class);
+
+		Connection<ExFm> connection = usersConnectionRepository.createConnectionRepository(userIdSource.getUserId())
+				.findPrimaryConnection(ExFm.class);
 		if (logger.isDebugEnabled() && connection == null) {
 			logger.debug("No current connection; Returning default ExFmTemplate instance.");
 		}

@@ -26,12 +26,16 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Import;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionRepository;
-
+import org.springframework.social.exfm.api.ExFm;
+import org.springframework.social.exfm.connect.ExFmConnectionFactory;
 
 /**
- * Annotation to enable ExFm in a Spring Social application.
- * Configures a {@link ExFmConnectionFactory} bean (and a {@link ConnectionFactoryLocator} bean if one isn't already registered).
- * Also configures a request-scoped {@link ExFm} bean fetched from the current user's {@link ConnectionRepository}. 
+ * Annotation to enable ExFm in a Spring Social application. Configures a
+ * {@link ExFmConnectionFactory} bean (and a {@link ConnectionFactoryLocator}
+ * bean if one isn't already registered). Also configures a request-scoped
+ * {@link ExFm} bean fetched from the current user's
+ * {@link ConnectionRepository}.
+ * 
  * @author Michael Lavelle
  */
 @Target(ElementType.TYPE)
@@ -45,21 +49,18 @@ public @interface EnableExFm {
 	 * The application's App ID as issued by SoundCloud.
 	 */
 	String appId();
-	
+
 	/**
 	 * The application's App Secret as issued by SoundCloud.
 	 */
 	String appSecret();
-	
-	
+
 	String redirectUri() default "";
-	
-	
-	
+
 	String oauthAuthorizeUrl();
-	
+
 	String oauthTokenUrl();
-	
+
 	String oauthApiBaseUrl();
-	
+
 }

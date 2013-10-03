@@ -22,18 +22,15 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @author Michael Lavelle
  */
-public class UsersTemplate extends AbstractExFmOperations implements
-		UsersOperations {
+public class UsersTemplate extends AbstractExFmOperations implements UsersOperations {
 
-	public UsersTemplate(String apiBaseUrl, RestTemplate restTemplate,
-			boolean isAuthorizedForUser) {
+	public UsersTemplate(String apiBaseUrl, RestTemplate restTemplate, boolean isAuthorizedForUser) {
 		super(apiBaseUrl, restTemplate, isAuthorizedForUser);
 	}
 
 	@Override
 	public UserOperations userOperations(String username) {
-		return new UserTemplate(getApiBaseUrl(), restTemplate,
-				isAuthorizedForUser, username);
+		return new UserTemplate(getApiBaseUrl(), restTemplate, isAuthorizedForUser, username);
 	}
 
 }

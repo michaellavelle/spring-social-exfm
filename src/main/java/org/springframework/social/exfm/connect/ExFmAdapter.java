@@ -33,8 +33,7 @@ public class ExFmAdapter implements ApiAdapter<ExFm> {
 	@Override
 	public UserProfile fetchUserProfile(ExFm exFm) {
 		ExFmProfile profile = exFm.meOperations().getUserProfile();
-		return new UserProfileBuilder().setName(profile.getName())
-				.setUsername(profile.getUsername()).build();
+		return new UserProfileBuilder().setName(profile.getName()).setUsername(profile.getUsername()).build();
 
 	}
 
@@ -44,8 +43,7 @@ public class ExFmAdapter implements ApiAdapter<ExFm> {
 		values.setProviderUserId(profile.getUsername());
 		values.setDisplayName(profile.getName());
 		values.setProfileUrl("http://ex.fm/" + profile.getUsername());
-		values.setImageUrl(profile.getImage() == null ? null : profile
-				.getImage().getOriginal());
+		values.setImageUrl(profile.getImage() == null ? null : profile.getImage().getOriginal());
 	}
 
 	@Override

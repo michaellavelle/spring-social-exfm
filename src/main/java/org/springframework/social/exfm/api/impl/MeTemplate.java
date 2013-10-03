@@ -28,14 +28,12 @@ public class MeTemplate extends AbstractUserTemplate implements MeOperations {
 	private String password;
 	private boolean useOauth;
 
-	public MeTemplate(String oauthApiBaseUrl, RestTemplate restTemplate,
-			boolean isAuthorizedForUser) {
+	public MeTemplate(String oauthApiBaseUrl, RestTemplate restTemplate, boolean isAuthorizedForUser) {
 		super(oauthApiBaseUrl, restTemplate, isAuthorizedForUser);
 		this.useOauth = true;
 	}
 
-	public MeTemplate(String apiBaseUrl, RestTemplate restTemplate,
-			String username, String password) {
+	public MeTemplate(String apiBaseUrl, RestTemplate restTemplate, String username, String password) {
 		super(apiBaseUrl, restTemplate, true);
 		this.username = username;
 		this.password = password;
@@ -51,15 +49,12 @@ public class MeTemplate extends AbstractUserTemplate implements MeOperations {
 	@Override
 	protected String getApiResourceUrl(String resourcePath) {
 		return super.getApiResourceUrl(resourcePath)
-				+ (useOauth ? ""
-						: ("?username=" + username + "&password=" + password));
+				+ (useOauth ? "" : ("?username=" + username + "&password=" + password));
 	}
 
 	@Override
 	protected String getApiResourceBaseUrl() {
 		return getApiBaseUrl() + "/me";
 	}
-	
-	
 
 }

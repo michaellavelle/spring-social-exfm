@@ -15,7 +15,6 @@
  */
 package org.springframework.social.exfm.api.impl.json;
 
-
 import org.springframework.social.exfm.api.ExFmProfile;
 import org.springframework.social.exfm.api.Song;
 
@@ -32,7 +31,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 public class ExFmModule extends SimpleModule {
 
 	public ExFmModule() {
-		super("ExFmModule", new Version(1, 0, 0, null,null,null));
+		super("ExFmModule", new Version(1, 0, 0, null, null, null));
 	}
 
 	@Override

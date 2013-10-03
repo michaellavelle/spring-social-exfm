@@ -20,7 +20,6 @@ import java.util.List;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.exfm.api.ExFm;
 import org.springframework.social.exfm.api.MeOperations;
@@ -41,7 +40,7 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 	private UsersOperations usersOperations;
 
 	private MeOperations meOperations;
-	
+
 	private SongOperations songOperations;
 
 	private ObjectMapper objectMapper;
@@ -64,7 +63,8 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 	 * ExFmTemplate using a given access token, and requires a given OAuth API
 	 * Url for ExFM (not currently available)
 	 * 
-	 * @param oauthApiBaseUrl An OAuth API Base url for ExFM (not currently available)
+	 * @param oauthApiBaseUrl
+	 *            An OAuth API Base url for ExFM (not currently available)
 	 * @param accessToken
 	 *            An access token given by ExFmTemplate after a successful OAuth
 	 *            2 authentication
@@ -79,7 +79,8 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 	 * ExFmTemplate using a given username and password, and requires the base
 	 * url of the existing ExFm (not oauth) API
 	 * 
-	 * @param apiBaseUrl The existing ExFM API base url (eg. http://ex.fm/api/v3 )
+	 * @param apiBaseUrl
+	 *            The existing ExFM API base url (eg. http://ex.fm/api/v3 )
 	 * @param username
 	 * @param password
 	 * 
@@ -90,31 +91,27 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 
 	@Override
 	protected List<HttpMessageConverter<?>> getMessageConverters() {
-		List<HttpMessageConverter<?>> messageConverters = super
-				.getMessageConverters();
+		List<HttpMessageConverter<?>> messageConverters = super.getMessageConverters();
 		messageConverters.add(new ByteArrayHttpMessageConverter());
 		return messageConverters;
 	}
 
 	@Override
 	protected void configureRestTemplate(RestTemplate restTemplate) {
-		restTemplate.setErrorHandler(new ExFmErrorHandler());	}
-
+		restTemplate.setErrorHandler(new ExFmErrorHandler());
+	}
 
 	private void initSubApis(String oauthApiBaseUrl, String accessToken) {
-		usersOperations = new UsersTemplate(oauthApiBaseUrl, getRestTemplate(),
-				isAuthorized());
-		meOperations = new MeTemplate(oauthApiBaseUrl, getRestTemplate(),
-				isAuthorized());
-		
-		songOperations = new SongTemplate(oauthApiBaseUrl, getRestTemplate(),isAuthorized());
+		usersOperations = new UsersTemplate(oauthApiBaseUrl, getRestTemplate(), isAuthorized());
+		meOperations = new MeTemplate(oauthApiBaseUrl, getRestTemplate(), isAuthorized());
+
+		songOperations = new SongTemplate(oauthApiBaseUrl, getRestTemplate(), isAuthorized());
 
 	}
 
 	@Override
 	protected MappingJackson2HttpMessageConverter getJsonMessageConverter() {
-		MappingJackson2HttpMessageConverter converter = super
-		.getJsonMessageConverter();
+		MappingJackson2HttpMessageConverter converter = super.getJsonMessageConverter();
 		objectMapper = new ObjectMapper();
 		objectMapper.registerModule(new ExFmModule());
 		converter.setObjectMapper(objectMapper);
@@ -122,12 +119,10 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 	}
 
 	private void initSubApis(String apiBaseUrl, String username, String password) {
-		usersOperations = new UsersTemplate(apiBaseUrl, getRestTemplate(),
-				isAuthorized());
-		meOperations = new MeTemplate(apiBaseUrl, getRestTemplate(), username,
-				password);
-		
-		songOperations = new SongTemplate(apiBaseUrl, getRestTemplate(),username,password);
+		usersOperations = new UsersTemplate(apiBaseUrl, getRestTemplate(), isAuthorized());
+		meOperations = new MeTemplate(apiBaseUrl, getRestTemplate(), username, password);
+
+		songOperations = new SongTemplate(apiBaseUrl, getRestTemplate(), username, password);
 
 	}
 
@@ -135,8 +130,7 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 	private void initialize(String apiBaseUrl, String accessToken) {
 		// Wrap the request factory with a BufferingClientHttpRequestFactory so
 		// that the error handler can do repeat reads on the response.getBody()
-		super.setRequestFactory(ClientHttpRequestFactorySelector
-				.bufferRequests(getRestTemplate().getRequestFactory()));
+		super.setRequestFactory(ClientHttpRequestFactorySelector.bufferRequests(getRestTemplate().getRequestFactory()));
 		initSubApis(apiBaseUrl, accessToken);
 
 	}
@@ -147,12 +141,10 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 		// Wrap the request factory with a BufferingClientHttpRequestFactory so
 		// that the error handler can do repeat reads on the response.getBody()
 
-		super.setRequestFactory(ClientHttpRequestFactorySelector
-				.bufferRequests(getRestTemplate().getRequestFactory()));
+		super.setRequestFactory(ClientHttpRequestFactorySelector.bufferRequests(getRestTemplate().getRequestFactory()));
 		initSubApis(apiBaseUrl, username, password);
 
 	}
-
 
 	@Override
 	public UsersOperations usersOperations() {
@@ -163,7 +155,7 @@ public class ExFmTemplate extends AbstractOAuth2ApiBinding implements ExFm {
 	public MeOperations meOperations() {
 		return meOperations;
 	}
-	
+
 	@Override
 	public SongOperations songOperations() {
 		return songOperations;

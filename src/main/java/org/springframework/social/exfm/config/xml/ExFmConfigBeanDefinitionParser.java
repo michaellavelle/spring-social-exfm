@@ -20,14 +20,16 @@ import java.util.Map;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.social.config.xml.AbstractProviderConfigBeanDefinitionParser;
 import org.springframework.social.exfm.config.support.ExFmApiHelper;
 import org.springframework.social.exfm.connect.ExFmConnectionFactory;
 import org.springframework.social.exfm.security.ExFmAuthenticationService;
-import org.springframework.social.config.xml.AbstractProviderConfigBeanDefinitionParser;
 import org.springframework.social.security.provider.SocialAuthenticationService;
 
 /**
- * Implementation of {@link AbstractConnectionFactoryBeanDefinitionParser} that creates a {@link ExFmConnectionFactory}.
+ * Implementation of {@link AbstractConnectionFactoryBeanDefinitionParser} that
+ * creates a {@link ExFmConnectionFactory}.
+ * 
  * @author Michael Lavelle
  */
 class ExFmConfigBeanDefinitionParser extends AbstractProviderConfigBeanDefinitionParser {
@@ -35,43 +37,44 @@ class ExFmConfigBeanDefinitionParser extends AbstractProviderConfigBeanDefinitio
 	public ExFmConfigBeanDefinitionParser() {
 		super(ExFmConnectionFactory.class, ExFmApiHelper.class);
 	}
-	
+
 	@Override
 	protected Class<? extends SocialAuthenticationService<?>> getAuthenticationServiceClass() {
 		return ExFmAuthenticationService.class;
 	}
 
 	@Override
-	protected BeanDefinition getAuthenticationServiceBeanDefinition(
-			String appId, String appSecret, Map<String, Object> allAttributes) {
-		return BeanDefinitionBuilder.genericBeanDefinition(authenticationServiceClass).addConstructorArgValue(appId).addConstructorArgValue(appSecret).
-		addConstructorArgValue(getOauthAuthorizeUrl(allAttributes)).
-		addConstructorArgValue(getOauthTokenUrl(allAttributes)).
-		addConstructorArgValue(getOauthApiBaseUrl(allAttributes))
+	protected BeanDefinition getAuthenticationServiceBeanDefinition(String appId, String appSecret,
+			Map<String, Object> allAttributes) {
+		return BeanDefinitionBuilder.genericBeanDefinition(authenticationServiceClass).addConstructorArgValue(appId)
+				.addConstructorArgValue(appSecret).addConstructorArgValue(getOauthAuthorizeUrl(allAttributes))
+				.addConstructorArgValue(getOauthTokenUrl(allAttributes))
+				.addConstructorArgValue(getOauthApiBaseUrl(allAttributes))
 
-		.getBeanDefinition();
+				.getBeanDefinition();
 	}
 
 	@Override
-	protected BeanDefinition getConnectionFactoryBeanDefinition(String appId, String appSecret, Map<String, Object> allAttributes) {
-		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(ExFmConnectionFactory.class).addConstructorArgValue(appSecret).
-		addConstructorArgValue(getOauthAuthorizeUrl(allAttributes)).
-		addConstructorArgValue(getOauthTokenUrl(allAttributes)).
-		addConstructorArgValue(getOauthApiBaseUrl(allAttributes));
-					
+	protected BeanDefinition getConnectionFactoryBeanDefinition(String appId, String appSecret,
+			Map<String, Object> allAttributes) {
+		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(ExFmConnectionFactory.class)
+				.addConstructorArgValue(appSecret).addConstructorArgValue(getOauthAuthorizeUrl(allAttributes))
+				.addConstructorArgValue(getOauthTokenUrl(allAttributes))
+				.addConstructorArgValue(getOauthApiBaseUrl(allAttributes));
+
 		return builder.getBeanDefinition();
 	}
-	
+
 	protected String getOauthAuthorizeUrl(Map<String, Object> allAttributes) {
-		return (String)allAttributes.get("oauth-authorize-url");
+		return (String) allAttributes.get("oauth-authorize-url");
 	}
-	
+
 	protected String getOauthTokenUrl(Map<String, Object> allAttributes) {
-		return (String)allAttributes.get("oauth-token-url");
+		return (String) allAttributes.get("oauth-token-url");
 	}
-	
+
 	protected String getOauthApiBaseUrl(Map<String, Object> allAttributes) {
-		return (String)allAttributes.get("oauth-api-base-url");
+		return (String) allAttributes.get("oauth-api-base-url");
 	}
 
 }

@@ -21,17 +21,14 @@ import org.springframework.social.security.provider.OAuth2AuthenticationService;
 
 /**
  * 
-* @author Michael Lavelle
- *
+ * @author Michael Lavelle
+ * 
  */
 public class ExFmAuthenticationService extends OAuth2AuthenticationService<ExFm> {
 
-
-	public ExFmAuthenticationService(String apiKey, String appSecret,String oauthAuthorizeUrl, String oauthTokenUrl,
+	public ExFmAuthenticationService(String apiKey, String appSecret, String oauthAuthorizeUrl, String oauthTokenUrl,
 			String oauthApiBaseUrl) {
-		super(new ExFmConnectionFactory(apiKey, appSecret,oauthAuthorizeUrl,oauthTokenUrl,oauthApiBaseUrl));
+		super(new ExFmConnectionFactory(apiKey, appSecret, oauthAuthorizeUrl, oauthTokenUrl, oauthApiBaseUrl));
 	}
-
-	
 
 }

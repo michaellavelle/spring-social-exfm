@@ -28,11 +28,9 @@ public class ExFmServiceProvider extends AbstractOAuth2ServiceProvider<ExFm> {
 
 	private String oauthApiBaseUrl;
 
-	public ExFmServiceProvider(String clientId, String clientSecret,
-			String oauthAuthorizeUrl, String oauthTokenUrl,
+	public ExFmServiceProvider(String clientId, String clientSecret, String oauthAuthorizeUrl, String oauthTokenUrl,
 			String oauthApiBaseUrl) {
-		super(new ExFmOAuth2Template(clientId, clientSecret, oauthAuthorizeUrl,
-				oauthTokenUrl));
+		super(new ExFmOAuth2Template(clientId, clientSecret, oauthAuthorizeUrl, oauthTokenUrl));
 		this.oauthApiBaseUrl = oauthApiBaseUrl;
 	}
 

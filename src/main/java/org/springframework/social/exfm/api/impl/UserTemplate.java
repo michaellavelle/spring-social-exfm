@@ -15,29 +15,21 @@
  */
 package org.springframework.social.exfm.api.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.social.exfm.api.Song;
 import org.springframework.social.exfm.api.UserOperations;
-import org.springframework.social.exfm.api.impl.json.AbstractPaginatedResponse;
 import org.springframework.social.exfm.api.impl.json.ExFmSongsResponse;
-import org.springframework.social.exfm.api.impl.json.SongList;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * @author Michael Lavelle
  */
-public class UserTemplate extends AbstractUserTemplate implements
-		UserOperations {
+public class UserTemplate extends AbstractUserTemplate implements UserOperations {
 
 	private String userId;
 
-	public UserTemplate(String apiBaseUrl, RestTemplate restTemplate,
-			boolean isAuthorizedForUser, String userId) {
+	public UserTemplate(String apiBaseUrl, RestTemplate restTemplate, boolean isAuthorizedForUser, String userId) {
 		super(apiBaseUrl, restTemplate, isAuthorizedForUser);
 		this.userId = userId;
 	}
@@ -46,16 +38,14 @@ public class UserTemplate extends AbstractUserTemplate implements
 	protected String getApiResourceBaseUrl() {
 		return getApiBaseUrl() + "/user/" + userId;
 	}
-	
-	
 
 	@Override
 	public Page<Song> getLovedSongs(Pageable pageable) {
-		ExFmSongsResponse songsResponse= restTemplate.getForObject(
-				getApiResourceUrl("/loved",pageable), ExFmSongsResponse.class);
+		ExFmSongsResponse songsResponse = restTemplate.getForObject(getApiResourceUrl("/loved", pageable),
+				ExFmSongsResponse.class);
 		return songsResponse.createPage(pageable);
 	}
-	
+
 	@Override
 	public Page<Song> getLovedSongs() {
 		return getLovedSongs(null);

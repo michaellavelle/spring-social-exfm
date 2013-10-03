@@ -15,13 +15,7 @@
  */
 package org.springframework.social.exfm.api.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.social.MissingAuthorizationException;
-import org.springframework.social.exfm.api.impl.json.AbstractPaginatedResponse;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -33,13 +27,12 @@ public abstract class AbstractExFmOperations {
 	protected final boolean isAuthorizedForUser;
 	private String apiBaseUrl;
 
-	public AbstractExFmOperations(String apiBaseUrl, RestTemplate restTemplate,
-			boolean isAuthorizedForUser) {
+	public AbstractExFmOperations(String apiBaseUrl, RestTemplate restTemplate, boolean isAuthorizedForUser) {
 		this.restTemplate = restTemplate;
 		this.isAuthorizedForUser = isAuthorizedForUser;
 		this.apiBaseUrl = apiBaseUrl;
-	}	
-	
+	}
+
 	protected void requireAuthorization() {
 		if (!isAuthorizedForUser) {
 			throw new MissingAuthorizationException("exfm");

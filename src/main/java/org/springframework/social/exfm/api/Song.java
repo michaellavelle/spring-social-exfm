@@ -24,14 +24,14 @@ public class Song {
 	private String url;
 	private String title;
 	private String artist;
-	
+
 	public String getArtist() {
 		return artist;
 	}
 
 	private Image image;
 
-	public Song(String id, String url,String artist, String title) {
+	public Song(String id, String url, String artist, String title) {
 		this.id = id;
 		this.url = url;
 		this.title = title;

@@ -26,25 +26,18 @@ import org.springframework.social.oauth2.OAuth2Template;
  */
 public class ExFmOAuth2Template extends OAuth2Template {
 
-	private String clientSecret;
-
-	public ExFmOAuth2Template(String clientId, String clientSecret,
-			String oauthAuthorizeUrl, String oauthTokenUrl) {
+	public ExFmOAuth2Template(String clientId, String clientSecret, String oauthAuthorizeUrl, String oauthTokenUrl) {
 		super(clientId, clientSecret, oauthAuthorizeUrl, oauthTokenUrl);
-		this.clientSecret = clientSecret;
 	}
 
 	@Override
-	public String buildAuthenticateUrl(GrantType grantType,
-			OAuth2Parameters parameters) {
+	public String buildAuthenticateUrl(GrantType grantType, OAuth2Parameters parameters) {
 
 		return super.buildAuthenticateUrl(grantType, parameters);
 	}
 
 	@Override
-	public String buildAuthorizeUrl(GrantType grantType,
-			OAuth2Parameters parameters) {
-		parameters.add("client_secret", clientSecret);
+	public String buildAuthorizeUrl(GrantType grantType, OAuth2Parameters parameters) {
 		parameters.add("scope", "read");
 		return super.buildAuthorizeUrl(grantType, parameters);
 	}

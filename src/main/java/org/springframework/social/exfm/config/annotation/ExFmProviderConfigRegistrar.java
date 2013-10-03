@@ -1,4 +1,5 @@
 package org.springframework.social.exfm.config.annotation;
+
 /*
  * Copyright 2013 the original author or authors.
  *
@@ -19,6 +20,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.social.config.annotation.AbstractProviderConfigRegistrarSupport;
 import org.springframework.social.exfm.api.ExFm;
 import org.springframework.social.exfm.config.support.ExFmApiHelper;
@@ -26,9 +28,10 @@ import org.springframework.social.exfm.connect.ExFmConnectionFactory;
 import org.springframework.social.exfm.security.ExFmAuthenticationService;
 import org.springframework.social.security.provider.SocialAuthenticationService;
 
-
 /**
- * {@link ImportBeanDefinitionRegistrar} for configuring a {@link ExFmConnectionFactory} bean and a request-scoped {@link ExFm} bean.
+ * {@link ImportBeanDefinitionRegistrar} for configuring a
+ * {@link ExFmConnectionFactory} bean and a request-scoped {@link ExFm} bean.
+ * 
  * @author Michael Lavelle
  */
 public class ExFmProviderConfigRegistrar extends AbstractProviderConfigRegistrarSupport {
@@ -36,42 +39,41 @@ public class ExFmProviderConfigRegistrar extends AbstractProviderConfigRegistrar
 	public ExFmProviderConfigRegistrar() {
 		super(EnableExFm.class, ExFmConnectionFactory.class, ExFmApiHelper.class);
 	}
-	
-	
-	@Override
-	protected BeanDefinition getConnectionFactoryBeanDefinition(String appId,
-			String appSecret, Map<String, Object> allAttributes) {
-		return BeanDefinitionBuilder.genericBeanDefinition(connectionFactoryClass).addConstructorArgValue(appId).
-		addConstructorArgValue(appSecret).addConstructorArgValue(getOauthAuthorizeUrl(allAttributes)).addConstructorArgValue(getOauthTokenUrl(allAttributes)).addConstructorArgValue(getOauthApiBaseUrl(allAttributes)).getBeanDefinition();
-	}
-
 
 	@Override
-	protected BeanDefinition getAuthenticationServiceBeanDefinition(
-			String appId, String appSecret, Map<String, Object> allAttributes) {
-		return BeanDefinitionBuilder.genericBeanDefinition(authenticationServiceClass).addConstructorArgValue(appId).
-		addConstructorArgValue(appSecret).addConstructorArgValue(getOauthAuthorizeUrl(allAttributes)).addConstructorArgValue(getOauthTokenUrl(allAttributes)).addConstructorArgValue(getOauthApiBaseUrl(allAttributes)).getBeanDefinition();
-
+	protected BeanDefinition getConnectionFactoryBeanDefinition(String appId, String appSecret,
+			Map<String, Object> allAttributes) {
+		return BeanDefinitionBuilder.genericBeanDefinition(connectionFactoryClass).addConstructorArgValue(appId)
+				.addConstructorArgValue(appSecret).addConstructorArgValue(getOauthAuthorizeUrl(allAttributes))
+				.addConstructorArgValue(getOauthTokenUrl(allAttributes))
+				.addConstructorArgValue(getOauthApiBaseUrl(allAttributes)).getBeanDefinition();
 	}
 
+	@Override
+	protected BeanDefinition getAuthenticationServiceBeanDefinition(String appId, String appSecret,
+			Map<String, Object> allAttributes) {
+		return BeanDefinitionBuilder.genericBeanDefinition(authenticationServiceClass).addConstructorArgValue(appId)
+				.addConstructorArgValue(appSecret).addConstructorArgValue(getOauthAuthorizeUrl(allAttributes))
+				.addConstructorArgValue(getOauthTokenUrl(allAttributes))
+				.addConstructorArgValue(getOauthApiBaseUrl(allAttributes)).getBeanDefinition();
+
+	}
 
 	@Override
 	protected Class<? extends SocialAuthenticationService<?>> getAuthenticationServiceClass() {
 		return ExFmAuthenticationService.class;
 	}
-	
+
 	protected String getOauthAuthorizeUrl(Map<String, Object> allAttributes) {
-		return (String)allAttributes.get("oauthAuthorizeUrl");
+		return (String) allAttributes.get("oauthAuthorizeUrl");
 	}
-	
+
 	protected String getOauthTokenUrl(Map<String, Object> allAttributes) {
-		return (String)allAttributes.get("oauthTokenUrl");
+		return (String) allAttributes.get("oauthTokenUrl");
 	}
-	
 
 	protected String getOauthApiBaseUrl(Map<String, Object> allAttributes) {
-		return (String)allAttributes.get("oauthApiBaseUrl");
+		return (String) allAttributes.get("oauthApiBaseUrl");
 	}
-	
-	
+
 }

@@ -27,39 +27,33 @@ import org.springframework.social.exfm.api.Song;
 import org.springframework.social.exfm.api.SongOperations;
 import org.springframework.social.exfm.api.impl.json.ExFmSongsResponse;
 import org.springframework.social.exfm.api.impl.json.ExFmUserResponse;
-import org.springframework.social.exfm.api.impl.json.SongList;
 import org.springframework.social.exfm.api.impl.json.SongResponse;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * @author Michael Lavelle
  */
-public class SongTemplate extends
-		AbstractExFmResourceOperations implements SongOperations {
+public class SongTemplate extends AbstractExFmResourceOperations implements SongOperations {
 
 	private String username;
 	private String password;
 	private boolean useOauth;
-	
-	public SongTemplate(String apiBaseUrl, RestTemplate restTemplate,
-			boolean isAuthorizedForUser) {
+
+	public SongTemplate(String apiBaseUrl, RestTemplate restTemplate, boolean isAuthorizedForUser) {
 		super(apiBaseUrl, restTemplate, isAuthorizedForUser);
 		this.useOauth = true;
 	}
-	
-	public SongTemplate(String apiBaseUrl, RestTemplate restTemplate,String username,String password) {
+
+	public SongTemplate(String apiBaseUrl, RestTemplate restTemplate, String username, String password) {
 		super(apiBaseUrl, restTemplate, true);
 		this.useOauth = true;
 		this.username = username;
 		this.password = password;
 		this.useOauth = false;
 	}
-	
-
 
 	public ExFmProfile getUserProfile() {
-		return restTemplate.getForObject(getApiResourceUrl(""),
-				ExFmUserResponse.class).getNestedResponse();
+		return restTemplate.getForObject(getApiResourceUrl(""), ExFmUserResponse.class).getNestedResponse();
 	}
 
 	@Override
@@ -69,87 +63,79 @@ public class SongTemplate extends
 
 	@Override
 	public Song getSongBySourceUrl(String sourceUrl) {
-		Song song = restTemplate.getForObject(
-				getApiResourceUrl("/" + sourceUrl), SongResponse.class).getNestedResponse();
-		if (song.getTitle() == null)
-		{
-			throw new ResourceNotFoundException("exfm","No song details available for source url :" + sourceUrl);
-		}	
-		return song;
-	}
-	
-	@Override
-	public Song getSongById(String songId) {
-		Song song = restTemplate.getForObject(
-				getApiResourceUrl("/" + songId), SongResponse.class).getNestedResponse();
-		if (song.getTitle() == null)
-		{
-			throw new ResourceNotFoundException("exfm","No song details available for song id :" + songId);
+		Song song = restTemplate.getForObject(getApiResourceUrl("/" + sourceUrl), SongResponse.class)
+				.getNestedResponse();
+		if (song.getTitle() == null) {
+			throw new ResourceNotFoundException("exfm", "No song details available for source url :" + sourceUrl);
 		}
 		return song;
 	}
-	
-	private String getContextParamsString(String contextUrl,String fromUser,boolean useOauth)
-	{
+
+	@Override
+	public Song getSongById(String songId) {
+		Song song = restTemplate.getForObject(getApiResourceUrl("/" + songId), SongResponse.class).getNestedResponse();
+		if (song.getTitle() == null) {
+			throw new ResourceNotFoundException("exfm", "No song details available for song id :" + songId);
+		}
+		return song;
+	}
+
+	private String getContextParamsString(String contextUrl, String fromUser, boolean useOauth) {
 		String contextParamsString = "";
 		String delimiter = useOauth ? "?" : "&";
-		if (contextUrl != null)
-		{
+		if (contextUrl != null) {
 			contextParamsString = contextParamsString + delimiter + "source=" + contextUrl;
 			delimiter = "&";
 		}
-		if (fromUser != null)
-		{
+		if (fromUser != null) {
 			contextParamsString = contextParamsString + delimiter + "context=" + fromUser;
 		}
 		return contextParamsString;
 	}
-	
+
 	@Override
-	public void loveSongById(String songId)
-	{
-		loveSongById(songId,null,null);
+	public void loveSongById(String songId) {
+		loveSongById(songId, null, null);
 	}
-	
+
 	@Override
-	public void loveSongBySourceUrl(String sourceUrl)
-	{
-		loveSongBySourceUrl(sourceUrl,null,null);
+	public void loveSongBySourceUrl(String sourceUrl) {
+		loveSongBySourceUrl(sourceUrl, null, null);
 	}
-	
+
 	@Override
-	public void loveSongById(String songId,String contextUrl,String fromUser)
-	{
+	public void loveSongById(String songId, String contextUrl, String fromUser) {
 		requireAuthorization();
-		String url = getApiResourceUrl("/" + songId + "/love") + (useOauth ? ""
-				: ("?username=" + username + "&password=" + password)) + getContextParamsString(contextUrl,fromUser,useOauth);
-		restTemplate.postForObject(url,null,String.class);	
+		String url = getApiResourceUrl("/" + songId + "/love")
+				+ (useOauth ? "" : ("?username=" + username + "&password=" + password))
+				+ getContextParamsString(contextUrl, fromUser, useOauth);
+		restTemplate.postForObject(url, null, String.class);
 	}
-	
+
 	@Override
-	public void loveSongBySourceUrl(String sourceUrl,String contextUrl,String fromUser)
-	{
+	public void loveSongBySourceUrl(String sourceUrl, String contextUrl, String fromUser) {
 		requireAuthorization();
 		Song song = getSongBySourceUrl(sourceUrl);
-		
-		restTemplate.postForObject(getApiResourceUrl("/" + song.getId() + "/love") + (useOauth ? ""
-				: ("?username=" + username + "&password=" + password))  + getContextParamsString(contextUrl,fromUser,useOauth),null,String.class);	
+
+		restTemplate.postForObject(
+				getApiResourceUrl("/" + song.getId() + "/love")
+						+ (useOauth ? "" : ("?username=" + username + "&password=" + password))
+						+ getContextParamsString(contextUrl, fromUser, useOauth), null, String.class);
 	}
-	
+
 	@Override
 	public Page<Song> search(String searchText) {
-		return search(searchText,null);
+		return search(searchText, null);
 	}
-	
+
 	@Override
-	public Page<Song> search(String searchText,Pageable pageable) {
-		ExFmSongsResponse songsResponse= restTemplate.getForObject(
-				getApiResourceUrl("/search/" + searchText,pageable), ExFmSongsResponse.class);
-		List<Song> songList = 
-			songsResponse.getNestedResponse();
+	public Page<Song> search(String searchText, Pageable pageable) {
+		ExFmSongsResponse songsResponse = restTemplate.getForObject(
+				getApiResourceUrl("/search/" + searchText, pageable), ExFmSongsResponse.class);
+		List<Song> songList = songsResponse.getNestedResponse();
 		long totalResults = (songsResponse.getTotal() == null) ? songList.size() : songsResponse.getTotal().longValue();
-		return new PageImpl<Song>(songList == null ? new ArrayList<Song>() : songList,songsResponse.getPageable(pageable,songList),totalResults);
+		return new PageImpl<Song>(songList == null ? new ArrayList<Song>() : songList, songsResponse.getPageable(
+				pageable, songList), totalResults);
 	}
-	
 
 }

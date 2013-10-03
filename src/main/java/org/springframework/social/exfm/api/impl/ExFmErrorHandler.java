@@ -44,24 +44,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 class ExFmErrorHandler extends DefaultResponseErrorHandler {
 
-	private void handleUncategorizedError(ClientHttpResponse response,
-			Status status) throws IOException {
+	private void handleUncategorizedError(ClientHttpResponse response, Status status) throws IOException {
 		try {
 			super.handleError(response);
 		} catch (Exception e) {
 			if (status != null && !status.getStatus_code().equals("200")) {
 				String m = status.getStatus_text();
-				throw new UncategorizedApiException("exfm",m, e);
+				throw new UncategorizedApiException("exfm", m, e);
 			} else {
 				String content = readFully(response.getBody());
-				if (content.contains("404 NOT FOUND"))
-				{
-					throw new ResourceNotFoundException("exfm","Not found");
+				if (content.contains("404 NOT FOUND")) {
+					throw new ResourceNotFoundException("exfm", "Not found");
 				}
-				
-				
-				throw new UncategorizedApiException("exfm",
-						"No error details from ExFm", e);
+
+				throw new UncategorizedApiException("exfm", "No error details from ExFm", e);
 			}
 		}
 	}
@@ -74,16 +70,15 @@ class ExFmErrorHandler extends DefaultResponseErrorHandler {
 			handleUncategorizedError(response, errorDetails);
 		}
 		handleExFmError(response.getStatusCode(), errorDetails);
-	
+
 		// if not otherwise handled, do default handling and wrap with
 		// UncategorizedApiException
 		handleUncategorizedError(response, errorDetails);
 	}
-	
-	
-	private boolean isIgnorableError(Status status)
-	{
-		// Loving a song which is already loved results in status code 400, with certain text - don't treat as an error
+
+	private boolean isIgnorableError(Status status) {
+		// Loving a song which is already loved results in status code 400, with
+		// certain text - don't treat as an error
 		return status != null && "Already loved this song".equals(status.getStatus_text());
 	}
 
@@ -97,34 +92,34 @@ class ExFmErrorHandler extends DefaultResponseErrorHandler {
 		// only bother checking the body for errors if we get past the default
 		// error check
 		String content = readFully(response.getBody());
-		return  !content.contains("\"status_code\": 200") && !content.contains("\"status_code\":200");
+		return !content.contains("\"status_code\": 200") && !content.contains("\"status_code\":200");
 	}
 
 	void handleExFmError(HttpStatus statusCode, Status status) {
 
 		String message = status.getStatus_text();
 
-		HttpStatus httpStatus = statusCode != HttpStatus.OK ? statusCode
-				: HttpStatus.valueOf(Integer.parseInt(status.getStatus_code()));
+		HttpStatus httpStatus = statusCode != HttpStatus.OK ? statusCode : HttpStatus.valueOf(Integer.parseInt(status
+				.getStatus_code()));
 
 		if (httpStatus == HttpStatus.OK) {
 			// Should never happen
 		} else if (httpStatus == HttpStatus.BAD_REQUEST) {
-			throw new ResourceNotFoundException("exfm",message);
+			throw new ResourceNotFoundException("exfm", message);
 
 		} else if (httpStatus == HttpStatus.NOT_FOUND) {
-			throw new ResourceNotFoundException("exfm",message);
+			throw new ResourceNotFoundException("exfm", message);
 
 		} else if (httpStatus == HttpStatus.UNAUTHORIZED) {
 
-			throw new NotAuthorizedException("exfm",message);
+			throw new NotAuthorizedException("exfm", message);
 		} else if (httpStatus == HttpStatus.FORBIDDEN) {
 
 			throw new OperationNotPermittedException("exfm", message);
 		} else if (httpStatus == HttpStatus.INTERNAL_SERVER_ERROR) {
-			throw new InternalServerErrorException("exfm",message);
+			throw new InternalServerErrorException("exfm", message);
 		} else if (httpStatus == HttpStatus.SERVICE_UNAVAILABLE) {
-			throw new ServerDownException("exfm",message);
+			throw new ServerDownException("exfm", message);
 		}
 	}
 
@@ -155,16 +150,14 @@ class ExFmErrorHandler extends DefaultResponseErrorHandler {
 	 * Attempts to extract ExFm error details from the response. Returns null if
 	 * the response doesn't match the expected JSON error response.
 	 */
-	private Status extractErrorDetailsFromResponse(ClientHttpResponse response)
-			throws IOException {
+	private Status extractErrorDetailsFromResponse(ClientHttpResponse response) throws IOException {
 
 		ObjectMapper mapper = new ObjectMapper(new JsonFactory());
 
 		try {
 			String json = readFully(response.getBody());
-			Status responseStatus = mapper.<Status> readValue(json,
-					new TypeReference<Status>() {
-					});
+			Status responseStatus = mapper.<Status> readValue(json, new TypeReference<Status>() {
+			});
 			if (!responseStatus.getStatus_code().equals("200")) {
 				return responseStatus;
 			} else {

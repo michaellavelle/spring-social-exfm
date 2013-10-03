@@ -22,7 +22,9 @@ package org.springframework.social.exfm.api;
 public interface ExFm {
 
 	public UsersOperations usersOperations();
+
 	public MeOperations meOperations();
+
 	public SongOperations songOperations();
 
 }

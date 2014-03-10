@@ -16,16 +16,8 @@
 
 package org.springframework.social.exfm.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.social.test.client.RequestMatchers.header;
-import static org.springframework.social.test.client.RequestMatchers.method;
-import static org.springframework.social.test.client.RequestMatchers.requestTo;
-import static org.springframework.social.test.client.ResponseCreators.withResponse;
-
 import org.junit.Test;
 import org.springframework.social.NotAuthorizedException;
-import org.springframework.social.ResourceNotFoundException;
 
 /**
  * @author Michael Lavelle

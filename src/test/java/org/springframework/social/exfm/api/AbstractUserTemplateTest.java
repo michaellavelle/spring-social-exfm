@@ -17,6 +17,7 @@
 package org.springframework.social.exfm.api;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.social.test.client.RequestMatchers.header;
 import static org.springframework.social.test.client.RequestMatchers.method;
@@ -127,8 +128,9 @@ public abstract class AbstractUserTemplateTest extends AbstractExFmApiTest {
 	}
 
 	private void assertBasicSongData(Song song) {
-		assertEquals("Madonna – Get Together (Monsieur Adi Remix)",
-				song.getTitle());
+		assertTrue(song.getTitle().endsWith("Get Together (Monsieur Adi Remix)"));
+		assertTrue(song.getTitle().startsWith("Madonna"));
+		
 		assertEquals("Madonna",song.getArtist());
 	}
 
